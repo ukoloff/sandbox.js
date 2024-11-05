@@ -1,0 +1,15 @@
+{
+  "name": "edge",
+  "version": "1.0.0",
+  "description": "https://github.com/agracio/edge-js, former https://github.com/tjanczuk/edge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "edge-js": "^23.1.1"
+  }
+}
