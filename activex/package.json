@@ -1,0 +1,12 @@
+{
+  "name": "activex",
+  "version": "1.0.0",
+  "description": "https://github.com/durs/node-activex",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
