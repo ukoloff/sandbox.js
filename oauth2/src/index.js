@@ -31,6 +31,11 @@ function login(req, res) {
 
 async function logged(req, res) {
   let user = await kcloak.code.getToken(req.originalUrl)
-  console.log(user)
+  // console.log(user)
   res.send("Success")
+  let data = user.sign({})
+  // console.log(data)
+  let r = await fetch("https://kcloak.ekb.ru/realms/omz2/protocol/openid-connect/userinfo", data)
+  let j = await r.json()
+  console.log(j)
 }
