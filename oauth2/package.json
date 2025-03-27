@@ -12,5 +12,8 @@
     "client-oauth2": "^4.3.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "chokidar": "^4.0.3"
   }
 }
