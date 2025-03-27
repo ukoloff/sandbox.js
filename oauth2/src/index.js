@@ -15,6 +15,7 @@ const app = express()
 
 app.get('/', home)
 app.get('/auth/', login)
+app.get('/auth/callback', logged)
 
 app.listen(process.env.port || 80)
 
@@ -26,4 +27,10 @@ function home(req, res) {
 
 function login(req, res) {
   res.redirect(kcloak.code.getUri())
+}
+
+async function logged(req, res) {
+  let user = await kcloak.code.getToken(req.originalUrl)
+  console.log(user)
+  res.send("Success")
 }
