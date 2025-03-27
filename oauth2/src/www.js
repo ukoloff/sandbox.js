@@ -22,7 +22,7 @@ app.listen(process.env.port || 80)
 function home(req, res) {
   res.send(`
     <li><a href=/auth/>Login</a>!
-    <li><a href=/auth/off>Logout</a>!
+    <li><a href=/auth/off target=logoff>Logout</a>!
     `)
 }
 
@@ -31,6 +31,8 @@ function login(req, res) {
 }
 
 function logout(req, res) {
+  // Consider adding post_logout_redirect_uri
+  // https://stackoverflow.com/a/76152326/6127481
   res.redirect("https://kcloak.ekb.ru/realms/omz2/protocol/openid-connect/logout")
 }
 
