@@ -21,7 +21,8 @@ app.listen(process.env.port || 80)
 
 function home(req, res) {
   res.send(`
-    <li><a href=/auth/>Auth</a>!
+    <li><a href=/auth/>Login</a>!
+    <li><a href="https://kcloak.ekb.ru/realms/omz2/protocol/openid-connect/logout">Logout</a>!
     `)
 }
 
