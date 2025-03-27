@@ -2,4 +2,8 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 
-console.log('Hello, world!')
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.listen(process.env.port || 80)
