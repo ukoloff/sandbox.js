@@ -33,7 +33,11 @@ function login(req, res) {
 function logout(req, res) {
   // Consider adding post_logout_redirect_uri
   // https://stackoverflow.com/a/76152326/6127481
-  res.redirect("https://kcloak.ekb.ru/realms/omz2/protocol/openid-connect/logout")
+  let q = new URLSearchParams({
+    post_logout_redirect_uri: 'http://localhost',
+    client_id: process.env.clientid
+  }).toString()
+  res.redirect("https://kcloak.ekb.ru/realms/omz2/protocol/openid-connect/logout?" + q)
 }
 
 
