@@ -45,7 +45,7 @@ async function logged(req, res) {
   // console.log(user)
   let data = user.sign({})
   // console.log(data)
-  let r = await fetch("https://kcloak.ekb.ru/realms/omz2/protocol/openid-connect/userinfo", data)
+  let r = await fetch(`https://kcloak.ekb.ru/realms/${process.env.realm}/protocol/openid-connect/userinfo`, data)
   let j = await r.json()
   res.header("Content-Type", "application/json")
   res.send(JSON.stringify(j, null, 2))
