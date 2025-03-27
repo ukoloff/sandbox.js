@@ -4,8 +4,8 @@ const oauth2 = require('client-oauth2')
 const kcloak = new oauth2({
   clientId: process.env.clientid,
   clientSecret: process.env.clientsecret,
-  authorizationUri: "https://kcloak.ekb.ru/realms/omz2/protocol/openid-connect/auth",
-  accessTokenUri: "https://kcloak.ekb.ru/realms/omz2/protocol/openid-connect/token",
+  authorizationUri: `https://kcloak.ekb.ru/realms/${process.env.realm}/protocol/openid-connect/auth`,
+  accessTokenUri: `https://kcloak.ekb.ru/realms/${process.env.realm}/protocol/openid-connect/token`,
   redirectUri: "http://localhost/auth/callback",
   scopes: ['openid', 'email', 'profile'],
 })
@@ -37,9 +37,8 @@ function logout(req, res) {
     post_logout_redirect_uri: 'http://localhost',
     client_id: process.env.clientid
   }).toString()
-  res.redirect("https://kcloak.ekb.ru/realms/omz2/protocol/openid-connect/logout?" + q)
+  res.redirect(`https://kcloak.ekb.ru/realms/${process.env.realm}/protocol/openid-connect/logout?` + q)
 }
-
 
 async function logged(req, res) {
   let user = await kcloak.code.getToken(req.originalUrl)
