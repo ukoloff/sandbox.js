@@ -1,4 +1,11 @@
+require! <[
+  @rollup/plugin-commonjs
+  @rollup/plugin-node-resolve
+]>
+
 module.exports = config
+
+extensions = <[ .js .ls ]>
 
 function config args
   input:  \./src/index.js
@@ -6,3 +13,6 @@ function config args
   output:
     dir: \out
     sourcemap: true
+  plugins:
+    plugin-commonjs {extensions}
+    plugin-node-resolve {extensions}
