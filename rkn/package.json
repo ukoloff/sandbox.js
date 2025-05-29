@@ -4,9 +4,15 @@
   "description": "Баннер про куки",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rollup -c",
+    "debug": "rollup -cw"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "livescript": "^1.6.0",
+    "rollup": "^4.41.1",
+    "without": "^1.2.3"
+  }
 }
