@@ -1,6 +1,7 @@
 require! <[
   @rollup/plugin-commonjs
   @rollup/plugin-node-resolve
+  ./livescript
 ]>
 
 module.exports = config
@@ -14,5 +15,6 @@ function config args
     dir: \out
     sourcemap: true
   plugins:
+    livescript!
     plugin-commonjs {extensions}
     plugin-node-resolve {extensions}
