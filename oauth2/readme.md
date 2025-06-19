@@ -12,3 +12,8 @@ CLIENTSECRET=XXXXXXXXXXXXXXXXXXXXXXXXXX
 DEV=1
 NUMCHILDREN=3
 ```
+
+## Keycloak logout
+
+https://kcloak.ekb.ru/realms/omz2/protocol/openid-connect/logout
+
