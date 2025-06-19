@@ -1,0 +1,20 @@
+{
+  "name": "oauth2",
+  "private": true,
+  "version": "1.0.0",
+  "main": "src",
+  "scripts": {
+    "start": "node ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "client-oauth2": "^4.3.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "chokidar": "^4.0.3"
+  }
+}
