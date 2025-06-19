@@ -2,5 +2,8 @@
   "name": "ai",
   "module": "index.ts",
   "type": "module",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "gigachat": "^0.0.14"
+  }
 }
