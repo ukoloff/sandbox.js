@@ -3,6 +3,9 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "engines": {
+    "node": ">= 22.15.0"
+  },
   "dependencies": {
     "dotenv": "^16.5.0",
     "gigachat": "^0.0.14"
