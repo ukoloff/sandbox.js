@@ -1,10 +1,15 @@
 //
 // Test run GigaChat
 //
-import  './env.js'
+import './env.js'
+import { Agent } from 'node:https'
 import GigaChat from 'gigachat'
 
-const llm = new GigaChat()
+const httpsAgent = new Agent({
+  rejectUnauthorized: false, // Отключает проверку корневого сертификата
+})
 
-res = await llm.chat('Привет, как дела?')
-console.log(res)
+const llm = new GigaChat({ httpsAgent })
+
+var res = await llm.chat('Привет, как дела?')
+console.log(res.choices[0].message.content)
