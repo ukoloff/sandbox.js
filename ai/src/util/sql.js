@@ -27,9 +27,9 @@ function parseConnectionString(url = process.env.DB_CONNECT) {
   return config
 }
 
-for (let k in cte) {
-  connect[k] = typeof (cte[k]) == 'function' ?
-    ($ = { space: spaces['*'] }) => `${k} as (${cte[k]($)})`
+for (let [k, v] of Object.entries(cte)) {
+  connect[k] = typeof (v) == 'function' ?
+    ($ = { space: spaces['*'] }) => `${k} as (${v($)})`
     :
-    `${k} as (${cte[k]})`
+    `${k} as (${v})`
 }
