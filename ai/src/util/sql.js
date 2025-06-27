@@ -1,5 +1,6 @@
 import sql from 'mssql'
 import * as cte from "../model/cte.js"
+import spaces from "../model/spaces.json" with { type: "json" }
 
 export default function connect() {
   return sql.connect(parseConnectionString())
@@ -26,9 +27,9 @@ function parseConnectionString(url = process.env.DB_CONNECT) {
   return config
 }
 
-for (var k in cte) {
+for (let k in cte) {
   connect[k] = typeof (cte[k]) == 'function' ?
-    $ => (k => `${k} as (${cte[k]($)})`)(k)
+    ($ = { space: spaces['*'] }) => `${k} as (${cte[k]($)})`
     :
     `${k} as (${cte[k]})`
 }

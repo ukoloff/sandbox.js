@@ -37,7 +37,7 @@ export const spaces = `
       _Reference174X1
 `
 
-export function pagez($) {
+export const pagez = $ =>
   `
   select
       *
@@ -52,4 +52,4 @@ export function pagez($) {
           where
               handle = '${$.space}'
       )
-`}
+`
