@@ -1,4 +1,5 @@
 import sql from 'mssql'
+import * as cte from "../model/cte.js"
 
 export default function connect() {
   return sql.connect(parseConnectionString())
@@ -23,4 +24,11 @@ function parseConnectionString(url = process.env.DB_CONNECT) {
     [config.options.instanceName, config.database] = config.database.split('/', 2)
   }
   return config
+}
+
+for (var k in cte) {
+  connect[k] = typeof (cte[k]) == 'function' ?
+    $ => (k => `${k} as (${cte[k]($)})`)(k)
+    :
+    `${k} as (${cte[k]})`
 }
