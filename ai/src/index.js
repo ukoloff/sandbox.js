@@ -11,15 +11,17 @@ q.query(`
       ${sql.pages},
       ${sql.spaces},
       ${sql.pagez()}
-    Select top 3
+    Select
       id, md,
       HASHBYTES('SHA2_256', md) as hash
     From pagez
     Where
       md is not Null
     `)
+
+let N = 0
 for await (let row of sql2it(q)) {
-  console.log(row)
+  console.log(++N, row.id.toString('hex'), row.hash.toString('hex'))
 }
 
 await db.close()
