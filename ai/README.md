@@ -1,15 +1,9 @@
 # ai
 
-To install dependencies:
+LLM playground
 
-```bash
-bun install
+## .env
 ```
-
-To run:
-
-```bash
-bun run index.ts
+GIGACHAT_CREDENTIALS=********
+DB_CONNECT=mssql://OMZGLOBAL\nc.ekb.ru:********@srvsql-1c/UPRIT_WORK
 ```
-
-This project was created using `bun init` in bun v1.2.16. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
