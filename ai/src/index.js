@@ -15,3 +15,5 @@ let result = await db.request()
     From pagez
     `)
 console.log(result.recordset[0]['N'])
+
+await db.close()
