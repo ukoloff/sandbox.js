@@ -7,9 +7,11 @@ let db = await sql()
 let result = await db.request()
   .query(`
     With
-      ${sql.pages}
+      ${sql.pages},
+      ${sql.spaces},
+      ${sql.pagez()}
     Select
       Count(*) as N
-    From pages
+    From pagez
     `)
 console.log(result.recordset[0]['N'])
