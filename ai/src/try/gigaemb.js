@@ -1,7 +1,7 @@
 //
 // Test run GigaChat
 //
-import './util/env.js'
+import '../util/env.js'
 import GigaChat from 'gigachat'
 
 const llm = new GigaChat()
