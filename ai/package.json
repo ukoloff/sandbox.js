@@ -15,6 +15,7 @@
   "dependencies": {
     "dotenv": "^16.5.0",
     "gigachat": "^0.0.14",
+    "langchain": "^0.3.29",
     "mssql": "^11.0.1"
   }
 }
