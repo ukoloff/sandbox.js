@@ -13,6 +13,8 @@
     "chroma": "uv run chroma run --path .chroma.db"
   },
   "dependencies": {
+    "@chroma-core/default-embed": "^0.1.8",
+    "chromadb": "^3.0.5",
     "dotenv": "^16.5.0",
     "gigachat": "^0.0.14",
     "langchain": "^0.3.29",
