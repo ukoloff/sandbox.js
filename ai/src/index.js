@@ -12,7 +12,9 @@ q.query(`
       ${sql.spaces},
       ${sql.pagez()}
     Select
-      id, md,
+      id,
+      md,
+      title,
       HASHBYTES('SHA2_256', md) as hash
     From pagez
     Where
@@ -21,7 +23,7 @@ q.query(`
 
 let N = 0
 for await (let row of sql2it(q)) {
-  console.log(++N, row.id.toString('hex'), row.hash.toString('hex'))
+  console.log(++N, row.id.toString('hex'), row.hash.toString('hex'), row.title)
 }
 
 await db.close()
