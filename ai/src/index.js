@@ -37,7 +37,7 @@ let splitter = new MarkdownTextSplitter({
 let N = 0
 for await (let row of sql2it(q)) {
   let doc = {
-    pageContent: `# ${row.title}\n\n${row.md}`,
+    pageContent: `<title>${row.title}</title>\n${row.md}`,
     metadata: {
       key: row.id.toString('hex'),
       hash: row.hash.toString('hex'),
