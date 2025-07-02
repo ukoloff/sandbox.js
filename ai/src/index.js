@@ -9,7 +9,7 @@ const client = new ChromaClient({
 })
 
 const coll = await client.getOrCreateCollection({
-  name: 'uxm',
+  name: 'kb.def',
 })
 
 let db = await sql()
@@ -46,12 +46,15 @@ for await (let row of sql2it(q)) {
   let docs = await splitter.invoke([doc])
   let count = 0
   for (let doc of docs) {
-    doc.metadata.chunk = ++count
-    delete doc.metadata.loc
+    let metadata = {
+      key: doc.metadata.key,
+      hash: doc.metadata.hash,
+      chunk: ++count,
+    }
 
     await coll.add({
       ids: [`${doc.metadata.key}-${count}`],
-      metadatas: [doc.metadata],
+      metadatas: [metadata],
       documents: [doc.pageContent],
     })
   }
