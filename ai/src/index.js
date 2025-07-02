@@ -2,6 +2,15 @@ import "./util/env.js"
 import sql from "./util/sql.js"
 import sql2it from "./util/sql2it.js"
 import { MarkdownTextSplitter } from 'langchain/text_splitter'
+import { ChromaClient } from 'chromadb'
+
+const client = new ChromaClient({
+  // path: 'http://localhost:8000',
+})
+
+const coll = await client.getOrCreateCollection({
+  name: 'uxm',
+})
 
 let db = await sql()
 let q = db.request()
@@ -38,6 +47,13 @@ for await (let row of sql2it(q)) {
   let count = 0
   for (let doc of docs) {
     doc.metadata.chunk = ++count
+    delete doc.metadata.loc
+
+    await coll.add({
+      ids: [`${doc.metadata.key}-${count}`],
+      metadatas: [doc.metadata],
+      documents: [doc.pageContent],
+    })
   }
   console.log(++N, row.id.toString('hex'), row.hash.toString('hex'), row.title)
 }
