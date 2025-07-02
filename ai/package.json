@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node .",
     "chroma.init": "uv sync",
-    "chroma": "uv run chroma run --path .chroma.db"
+    "chroma": "uv run chroma run"
   },
   "dependencies": {
     "@chroma-core/default-embed": "^0.1.8",
