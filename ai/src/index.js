@@ -2,7 +2,8 @@ import "./util/env.js"
 import sql from "./util/sql.js"
 import sql2it from "./util/sql2it.js"
 import { MarkdownTextSplitter } from 'langchain/text_splitter'
-import { ChromaClient } from 'chromadb'
+import { ChromaClient, knownEmbeddingFunctions } from 'chromadb'
+import { GigaChat } from 'gigachat'
 
 const client = new ChromaClient({
   // path: 'http://localhost:8000',
@@ -11,6 +12,24 @@ const client = new ChromaClient({
 const coll = await client.getOrCreateCollection({
   name: 'kb.def',
 })
+
+class GigaEmb {
+  constructor(model="Embeddings") {
+    if (model == '+') {
+      model = "EmbeddingsGigaR"
+    }
+    this.model = model
+    this.llm = new GigaChat()
+  }
+
+  async generate(texts) {
+    let res = await this.llm.embeddings(texts, this.model)
+    return res.data.map($ => $.embedding)
+  }
+}
+
+let emb = new GigaEmb()
+let x = await emb.generate(['Привет!'])
 
 if (!await coll.count()) {
   await fill(coll)
