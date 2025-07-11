@@ -10,11 +10,9 @@ const client = new ChromaClient({
 })
 
 const coll = await client.getOrCreateCollection({
-  name: 'kb.def',
+  name: 'kb.gigaR',
+  embeddingFunction: new GigaEmb('+'),
 })
-
-let emb = new GigaEmb('+')
-let x = await emb.generate(['Привет!'])
 
 if (!await coll.count()) {
   await fill(coll)
