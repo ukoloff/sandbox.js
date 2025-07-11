@@ -12,9 +12,19 @@ const coll = await client.getOrCreateCollection({
   name: 'kb.def',
 })
 
-let db = await sql()
-let q = db.request()
-q.query(`
+if (!await coll.count()) {
+  await fill(coll)
+}
+
+async function fill(coll) {
+  let splitter = new MarkdownTextSplitter({
+    chunkSize: 1000,
+    chunkOverlap: 200
+  })
+
+  let db = await sql()
+  let q = db.request()
+  q.query(`
     With
       ${sql.pages},
       ${sql.spaces},
@@ -29,36 +39,32 @@ q.query(`
       md is not Null
     `)
 
-let splitter = new MarkdownTextSplitter({
-  chunkSize: 1000,
-  chunkOverlap: 200
-})
-
-let N = 0
-for await (let row of sql2it(q)) {
-  let doc = {
-    pageContent: `<title>${row.title}</title>\n${row.md}`,
-    metadata: {
-      key: row.id.toString('hex'),
-      hash: row.hash.toString('hex'),
-    },
-  }
-  let docs = await splitter.invoke([doc])
-  let count = 0
-  for (let doc of docs) {
-    let metadata = {
-      key: doc.metadata.key,
-      hash: doc.metadata.hash,
-      chunk: ++count,
+  let N = 0
+  for await (let row of sql2it(q)) {
+    let doc = {
+      pageContent: `<title>${row.title}</title>\n${row.md}`,
+      metadata: {
+        key: row.id.toString('hex'),
+        hash: row.hash.toString('hex'),
+      },
     }
+    let docs = await splitter.invoke([doc])
+    let count = 0
+    for (let doc of docs) {
+      let metadata = {
+        key: doc.metadata.key,
+        hash: doc.metadata.hash,
+        chunk: ++count,
+      }
 
-    await coll.add({
-      ids: [`${doc.metadata.key}-${count}`],
-      metadatas: [metadata],
-      documents: [doc.pageContent],
-    })
+      await coll.add({
+        ids: [`${doc.metadata.key}-${count}`],
+        metadatas: [metadata],
+        documents: [doc.pageContent],
+      })
+    }
+    console.log(++N, row.id.toString('hex'), row.hash.toString('hex'), row.title)
   }
-  console.log(++N, row.id.toString('hex'), row.hash.toString('hex'), row.title)
-}
 
-await db.close()
+  await db.close()
+}
