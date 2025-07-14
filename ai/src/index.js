@@ -1,7 +1,7 @@
 import "./util/env.js"
 import sql from "./util/sql.js"
 import sql2it from "./util/sql2it.js"
-import { MarkdownTextSplitter } from 'langchain/text_splitter'
+import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter'
 import { ChromaClient, knownEmbeddingFunctions } from 'chromadb'
 import { GigaEmb } from "./gemb.js"
 
@@ -10,8 +10,8 @@ const client = new ChromaClient({
 })
 
 const coll = await client.getOrCreateCollection({
-  name: 'kb.gigaR',
-  embeddingFunction: new GigaEmb('+'),
+  name: 'kb.gigaRtext',
+  embeddingFunction: new GigaEmb(),
 })
 
 if (!await coll.count()) {
@@ -19,7 +19,7 @@ if (!await coll.count()) {
 }
 
 async function fill(coll) {
-  let splitter = new MarkdownTextSplitter({
+  let splitter = new RecursiveCharacterTextSplitter({
     chunkSize: 1000,
     chunkOverlap: 200
   })
