@@ -9,13 +9,13 @@ const client = new ChromaClient({
   // path: 'http://localhost:8000',
 })
 
-const cname = 'kb.gigaRtext'
+const cname = 'kb.gigaR'
 
 // await client.deleteCollection({name: cname})
 
 const coll = await client.getOrCreateCollection({
   name: cname,
-  embeddingFunction: new GigaEmb(),
+  embeddingFunction: new GigaEmb('+'),
 })
 
 if (!await coll.count()) {
@@ -24,7 +24,7 @@ if (!await coll.count()) {
 
 async function fill(coll) {
   let splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 1000,
+    chunkSize: 3000,
     chunkOverlap: 200
   })
 
