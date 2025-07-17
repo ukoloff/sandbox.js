@@ -9,10 +9,12 @@ const client = new ChromaClient({
   // path: 'http://localhost:8000',
 })
 
-// await client.deleteCollection({name: 'kb.gigaRtext'})
+const cname = 'kb.gigaRtext'
+
+// await client.deleteCollection({name: cname})
 
 const coll = await client.getOrCreateCollection({
-  name: 'kb.gigaRtext',
+  name: cname,
   embeddingFunction: new GigaEmb(),
 })
 
