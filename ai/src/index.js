@@ -68,6 +68,7 @@ async function fill(coll) {
       })
     }
     console.log(++N, row.id.toString('hex'), row.hash.toString('hex'), row.title)
+    console.log('<', docs.map($ => $.pageContent.length).join(', '), '>')
   }
 
   await db.close()
