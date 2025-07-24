@@ -3,7 +3,7 @@ import sql from "./util/sql.js"
 import sql2it from "./util/sql2it.js"
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter'
 import { ChromaClient, knownEmbeddingFunctions } from 'chromadb'
-import { GigaEmb } from "./gemb.js"
+import { GigaEmb } from "./model/gemb.js"
 
 const client = new ChromaClient({
   // path: 'http://localhost:8000',
