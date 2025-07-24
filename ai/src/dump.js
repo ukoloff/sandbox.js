@@ -10,19 +10,19 @@ const client = new ChromaClient({
   // path: 'http://localhost:8000',
 })
 
-const cname = 'kb.gigaR'
+for (let coll of await client.listCollections()) {
+  console.log(`[${coll.name}]`)
 
-const coll = await client.getOrCreateCollection({ name: cname })
+  let docs = await coll.get()
 
-let docs = await coll.get()
+  let dst = fs.createWriteStream(path.join(import.meta.dirname, '..', 'out', `${coll.name}.yml`))
 
-let dst = fs.createWriteStream(path.join(import.meta.dirname, '..', 'out', `${cname}.yml`))
-
-for (let i of docs.ids.keys())
-  dst.write(stringify([{
-    id: docs.ids[i],
-    meta: docs.metadatas[i],
-    text: docs.documents[i],
-  }]))
+  for (let i of docs.ids.keys())
+    dst.write(stringify([{
+      id: docs.ids[i],
+      meta: docs.metadatas[i],
+      text: docs.documents[i],
+    }]))
 
   dst.close()
+}
