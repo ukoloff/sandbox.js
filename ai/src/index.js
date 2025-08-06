@@ -81,6 +81,10 @@ async function fill(coll) {
       },
     }
     let docs = await splitter.invoke([doc])
+
+    console.log(++N, row.id.toString('hex'), row.hash.toString('hex'), row.title)
+    console.log('<' + docs.map($ => $.pageContent.length).join(' ') + '>')
+
     let count = 0
     for (let doc of docs) {
       let metadata = {
@@ -96,8 +100,6 @@ async function fill(coll) {
         documents: [doc.pageContent],
       })
     }
-    console.log(++N, row.id.toString('hex'), row.hash.toString('hex'), row.title)
-    console.log('<', docs.map($ => $.pageContent.length).join(', '), '>')
   }
 
   await db.close()
