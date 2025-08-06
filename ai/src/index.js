@@ -50,7 +50,8 @@ if (!await coll.count()) {
 async function fill(coll) {
   let splitter = new RecursiveCharacterTextSplitter({
     chunkSize: Option.chunk,
-    chunkOverlap: 200
+    chunkOverlap: 200,
+    separators: ["\n", " ", ""],
   })
 
   let db = await sql()
