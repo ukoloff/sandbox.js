@@ -8,17 +8,39 @@ import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter'
 import { ChromaClient, knownEmbeddingFunctions } from 'chromadb'
 import { GigaEmb } from "./model/gemb.js"
 
+const Options = [
+  {
+    // size: 384
+    coll: 'kb.def',
+    chunk: 1000,
+  },
+  {
+    // size: 1024
+    coll: 'kb.gigaRtext',
+    chunk: 1000,
+    emb: new GigaEmb()
+  },
+  {
+    // size: 2560
+    coll: 'kb.gigaR',
+    chunk: 3000,
+    emb: new GigaEmb('+')
+  }
+]
+
+const Option = Options[0]
+
 const client = new ChromaClient({
   // path: 'http://localhost:8000',
 })
 
-const cname = 'kb.gigaRtext'
+const cname = Option.coll
 
 // await client.deleteCollection({name: cname})
 
 const coll = await client.getOrCreateCollection({
   name: cname,
-  embeddingFunction: new GigaEmb(),
+  embeddingFunction: Option.emb
 })
 
 if (!await coll.count()) {
@@ -27,7 +49,7 @@ if (!await coll.count()) {
 
 async function fill(coll) {
   let splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 1000,
+    chunkSize: Option.chunk,
     chunkOverlap: 200
   })
 
