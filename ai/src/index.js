@@ -5,6 +5,8 @@ import "./util/env.js"
 import sql from "./util/sql.js"
 import sql2it from "./util/sql2it.js"
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter'
+import { DirectoryLoader } from "langchain/document_loaders/fs/directory"
+import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf"
 import { ChromaClient, knownEmbeddingFunctions } from 'chromadb'
 import { GigaEmb } from "./model/gemb.js"
 
@@ -43,8 +45,12 @@ const coll = await client.getOrCreateCollection({
   embeddingFunction: Option.emb
 })
 
-if (!(await coll.get({limit: 1, where: {'src': 'KB'}})).documents.length) {
+if (!(await coll.get({ limit: 1, where: { 'src': 'KB' } })).documents.length) {
   await fillKB(coll)
+}
+
+if (!(await coll.get({ limit: 1, where: { 'src': 'pdf' } })).documents.length) {
+  await fillPDF(coll)
 }
 
 async function fillKB(coll) {
@@ -101,6 +107,14 @@ async function fillKB(coll) {
       })
     }
   }
-
   await db.close()
+}
+
+async function fillPDF(coll) {
+  const dir = new DirectoryLoader('\\\\omzglobal\\uxm\\!Совместные_проекты\\СЭД Tessa\\Обучение',
+    { '.pdf': path => new PDFLoader(path, { splitPages: false }) }
+  )
+  console.log('Loading PDFs...')
+  let docs = await dir.load()
+  print(docs)
 }
