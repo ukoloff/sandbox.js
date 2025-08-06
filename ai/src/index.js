@@ -112,7 +112,7 @@ async function fillKB(coll) {
 
 async function fillPDF(coll) {
   const dir = new DirectoryLoader('\\\\omzglobal\\uxm\\!Совместные_проекты\\СЭД Tessa\\Обучение',
-    { '.pdf': path => new PDFLoader(path, { splitPages: false }) }
+    { '.pdf': path => new PDFLoader(path, { splitPages: false }) }, false, "ignore"
   )
   console.log('Loading PDFs...')
   let docs = await dir.load()
