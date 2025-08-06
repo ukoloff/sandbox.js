@@ -1,0 +1,153 @@
+//
+// Load texts from Knowledge Base & PDFs to Chroma DB
+//
+import { basename } from 'node:path'
+import { createHash } from 'node:crypto'
+import "./util/env.js"
+import sql from "./util/sql.js"
+import sql2it from "./util/sql2it.js"
+import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter'
+import { DirectoryLoader } from "langchain/document_loaders/fs/directory"
+import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf"
+import { ChromaClient } from 'chromadb'
+import { GigaEmb } from "./model/gemb.js"
+import h2uuid from './util/hash2uuid.js'
+
+const Presets = [
+  {
+    // size: 384
+    coll: 'kb.def',
+    chunk: 1000,
+  },
+  {
+    // size: 1024
+    coll: 'kb.gigaRtext',
+    chunk: 1000,
+    emb: new GigaEmb()
+  },
+  {
+    // size: 2560
+    coll: 'kb.gigaR',
+    chunk: 3000,
+    emb: new GigaEmb('+')
+  }
+]
+
+const Preset = Presets[0]
+
+const client = new ChromaClient({
+  // path: 'http://localhost:8000',
+})
+
+const cname = Preset.coll
+
+// await client.deleteCollection({name: cname})
+
+const coll = await client.getOrCreateCollection({
+  name: cname,
+  embeddingFunction: Preset.emb
+})
+
+if (!(await coll.get({ limit: 1, where: { 'src': 'KB' } })).documents.length) {
+  await fillKB(coll)
+}
+
+if (!(await coll.get({ limit: 1, where: { 'src': 'pdf' } })).documents.length) {
+  await fillPDF(coll)
+}
+
+async function fillKB(coll) {
+  console.log('Reading KB...')
+  let splitter = getSplitter()
+
+  let db = await sql()
+  let q = db.request()
+  q.query(`
+    With
+      ${sql.pages},
+      ${sql.spaces},
+      ${sql.pagez()}
+    Select
+      id,
+      md,
+      title,
+      HASHBYTES('SHA2_256', md) as hash
+    From pagez
+    Where
+      md is not Null
+    `)
+
+  let N = 0
+  for await (let row of sql2it(q)) {
+    let doc = {
+      pageContent: `<title>${row.title}</title>\n${row.md}`,
+      metadata: {
+        key: row.id.toString('hex'),
+        hash: row.hash.toString('hex'),
+      },
+    }
+    let docs = await splitter.invoke([doc])
+
+    console.log(++N, row.id.toString('hex'), row.hash.toString('hex'), row.title)
+    console.log('<' + docs.map($ => $.pageContent.length).join(' ') + '>')
+
+    let count = 0
+    for (let doc of docs) {
+      let metadata = {
+        src: 'KB',
+        key: doc.metadata.key,
+        hash: doc.metadata.hash,
+        chunk: ++count,
+      }
+
+      await coll.add({
+        ids: [`${doc.metadata.key}-${count}`],
+        metadatas: [metadata],
+        documents: [doc.pageContent],
+      })
+    }
+  }
+  await db.close()
+}
+
+function getSplitter() {
+  return new RecursiveCharacterTextSplitter({
+    chunkSize: Preset.chunk,
+    chunkOverlap: 200,
+    separators: ["\n", " ", ""],
+  })
+}
+
+async function fillPDF(coll) {
+  console.log('Loading PDFs...')
+  const dir = new DirectoryLoader('\\\\omzglobal\\uxm\\!Совместные_проекты\\СЭД Tessa\\Обучение',
+    { '.pdf': path => new PDFLoader(path, { splitPages: false }) }, false, "ignore"
+  )
+  let docs = await dir.load()
+  let splitter = getSplitter()
+  for (let doc of docs) {
+    let fname = basename(doc.metadata.source)
+    console.log(fname)
+    let hash = createHash('sha256')
+    hash.update(doc.pageContent)
+    let hexHash = hash.digest('hex')
+    let uuid = h2uuid(hexHash)
+    let count = 0
+    let chunks = await splitter.invoke([doc])
+    console.log('<' + chunks.map($ => $.pageContent.length).join(' ') + '>')
+    for (let chunk of chunks) {
+      let metadata = {
+        src: 'pdf',
+        source: fname,
+        hash: hexHash,
+        chunk: ++count,
+      }
+
+      await coll.add({
+        ids: [`${uuid}-${count}`],
+        metadatas: [metadata],
+        documents: [chunk.pageContent],
+      })
+    }
+  }
+}

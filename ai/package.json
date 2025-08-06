@@ -1,0 +1,25 @@
+{
+  "name": "ai",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">= 22.15.0"
+  },
+  "main": "src",
+  "scripts": {
+    "start": "node .",
+    "chroma.init": "uv sync",
+    "chroma": "uv run chroma run"
+  },
+  "dependencies": {
+    "@chroma-core/default-embed": "^0.1.8",
+    "@langchain/community": "^0.3.49",
+    "chromadb": "^3.0.5",
+    "dotenv": "^16.5.0",
+    "gigachat": "^0.0.14",
+    "langchain": "^0.3.29",
+    "mssql": "^11.0.1",
+    "pdf-parse": "^1.1.1"
+  }
+}
