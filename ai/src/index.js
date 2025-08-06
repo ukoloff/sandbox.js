@@ -1,3 +1,6 @@
+//
+// Load texts from Knowledge Base to Chroma DB
+//
 import "./util/env.js"
 import sql from "./util/sql.js"
 import sql2it from "./util/sql2it.js"
@@ -9,13 +12,13 @@ const client = new ChromaClient({
   // path: 'http://localhost:8000',
 })
 
-const cname = 'kb.gigaR'
+const cname = 'kb.gigaRtext'
 
 // await client.deleteCollection({name: cname})
 
 const coll = await client.getOrCreateCollection({
   name: cname,
-  embeddingFunction: new GigaEmb('+'),
+  embeddingFunction: new GigaEmb(),
 })
 
 if (!await coll.count()) {
@@ -24,7 +27,7 @@ if (!await coll.count()) {
 
 async function fill(coll) {
   let splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 3000,
+    chunkSize: 1000,
     chunkOverlap: 200
   })
 
