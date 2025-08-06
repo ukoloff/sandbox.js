@@ -1,5 +1,5 @@
 //
-// Load texts from Knowledge Base to Chroma DB
+// Load texts from Knowledge Base & PDFs to Chroma DB
 //
 import { basename } from 'node:path'
 import { createHash } from 'node:crypto'
@@ -9,7 +9,7 @@ import sql2it from "./util/sql2it.js"
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter'
 import { DirectoryLoader } from "langchain/document_loaders/fs/directory"
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf"
-import { ChromaClient, knownEmbeddingFunctions } from 'chromadb'
+import { ChromaClient } from 'chromadb'
 import { GigaEmb } from "./model/gemb.js"
 import h2uuid from './util/hash2uuid.js'
 
