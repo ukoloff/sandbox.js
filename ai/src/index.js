@@ -52,7 +52,7 @@ if (!(await coll.get({ limit: 1, where: { 'src': 'KB' } })).documents.length) {
   await fillKB(coll)
 }
 
-if ((await coll.get({ limit: 1, where: { 'src': 'pdf' } })).documents.length) {
+if (!(await coll.get({ limit: 1, where: { 'src': 'pdf' } })).documents.length) {
   await fillPDF(coll)
 }
 
