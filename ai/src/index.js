@@ -84,6 +84,7 @@ async function fill(coll) {
     let count = 0
     for (let doc of docs) {
       let metadata = {
+        src: 'KB',
         key: doc.metadata.key,
         hash: doc.metadata.hash,
         chunk: ++count,
