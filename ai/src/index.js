@@ -43,11 +43,11 @@ const coll = await client.getOrCreateCollection({
   embeddingFunction: Option.emb
 })
 
-if (!await coll.count()) {
-  await fill(coll)
+if (!(await coll.get({limit: 1, where: {'src': 'KB'}})).documents.length) {
+  await fillKB(coll)
 }
 
-async function fill(coll) {
+async function fillKB(coll) {
   let splitter = new RecursiveCharacterTextSplitter({
     chunkSize: Option.chunk,
     chunkOverlap: 200,
