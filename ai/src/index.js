@@ -1,6 +1,8 @@
 //
 // Load texts from Knowledge Base to Chroma DB
 //
+import { basename } from 'node:path'
+import { createHash } from 'node:crypto'
 import "./util/env.js"
 import sql from "./util/sql.js"
 import sql2it from "./util/sql2it.js"
@@ -9,8 +11,9 @@ import { DirectoryLoader } from "langchain/document_loaders/fs/directory"
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf"
 import { ChromaClient, knownEmbeddingFunctions } from 'chromadb'
 import { GigaEmb } from "./model/gemb.js"
+import h2uuid from './util/hash2uuid.js'
 
-const Options = [
+const Presets = [
   {
     // size: 384
     coll: 'kb.def',
@@ -30,35 +33,32 @@ const Options = [
   }
 ]
 
-const Option = Options[0]
+const Preset = Presets[0]
 
 const client = new ChromaClient({
   // path: 'http://localhost:8000',
 })
 
-const cname = Option.coll
+const cname = Preset.coll
 
 // await client.deleteCollection({name: cname})
 
 const coll = await client.getOrCreateCollection({
   name: cname,
-  embeddingFunction: Option.emb
+  embeddingFunction: Preset.emb
 })
 
 if (!(await coll.get({ limit: 1, where: { 'src': 'KB' } })).documents.length) {
   await fillKB(coll)
 }
 
-if (!(await coll.get({ limit: 1, where: { 'src': 'pdf' } })).documents.length) {
+if ((await coll.get({ limit: 1, where: { 'src': 'pdf' } })).documents.length) {
   await fillPDF(coll)
 }
 
 async function fillKB(coll) {
-  let splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: Option.chunk,
-    chunkOverlap: 200,
-    separators: ["\n", " ", ""],
-  })
+  console.log('Reading KB...')
+  let splitter = getSplitter()
 
   let db = await sql()
   let q = db.request()
@@ -110,11 +110,44 @@ async function fillKB(coll) {
   await db.close()
 }
 
+function getSplitter() {
+  return new RecursiveCharacterTextSplitter({
+    chunkSize: Preset.chunk,
+    chunkOverlap: 200,
+    separators: ["\n", " ", ""],
+  })
+}
+
 async function fillPDF(coll) {
+  console.log('Loading PDFs...')
   const dir = new DirectoryLoader('\\\\omzglobal\\uxm\\!Совместные_проекты\\СЭД Tessa\\Обучение',
     { '.pdf': path => new PDFLoader(path, { splitPages: false }) }, false, "ignore"
   )
-  console.log('Loading PDFs...')
   let docs = await dir.load()
-  print(docs)
+  let splitter = getSplitter()
+  for (let doc of docs) {
+    let fname = basename(doc.metadata.source)
+    console.log(fname)
+    let hash = createHash('sha256')
+    hash.update(doc.pageContent)
+    let hexHash = hash.digest('hex')
+    let uuid = h2uuid(hexHash)
+    let count = 0
+    let chunks = await splitter.invoke([doc])
+    console.log('<' + chunks.map($ => $.pageContent.length).join(' ') + '>')
+    for (let chunk of chunks) {
+      let metadata = {
+        src: 'pdf',
+        source: fname,
+        hash: hexHash,
+        chunk: ++count,
+      }
+
+      await coll.add({
+        ids: [`${uuid}-${count}`],
+        metadatas: [metadata],
+        documents: [chunk.pageContent],
+      })
+    }
+  }
 }
