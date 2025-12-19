@@ -2,14 +2,14 @@
   "name": "src",
   "version": "1.0.0",
   "description": "Testing OpenID Connect server",
-  "main": "index.js",
+  "main": "src",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "oidc-provider": "^9.6.0"
   }
