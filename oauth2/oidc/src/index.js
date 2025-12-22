@@ -14,6 +14,14 @@ const provider = new Provider("http://localhost:3000", {
       // ... other client properties
     },
   ],
+  routes: {
+    jwks: '/protocol/openid-connect/certs',
+    authorization: '/protocol/openid-connect/auth',
+    token: '/protocol/openid-connect/token',
+    userinfo: '/protocol/openid-connect/userinfo',
+    end_session: '/protocol/openid-connect/logout',
+    pushed_authorization_request: '/protocol/openid-connect/ext/par/request',
+  }
 })
 
 const server = provider.listen(3000, () => {
