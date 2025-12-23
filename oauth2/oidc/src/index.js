@@ -1,6 +1,6 @@
 import { Provider } from "oidc-provider"
-import { generateKeyPair, exportJWK } from 'jose'
 import express from 'express'
+import { makeKeys } from "./jwks.js"
 
 // https://github.com/panva/node-oidc-provider/blob/main/example/express.js
 const { PORT = 3000, ISSUER = `http://localhost:${PORT}` } = process.env
@@ -34,25 +34,4 @@ let server = app.listen(PORT, $ => {
   console.log(`application is listening on port ${PORT}, check  ${ISSUER}/.well-known/openid-configuration`)
 })
 
-async function makeKeys() {
-  {
-    let { publicKey, privateKey } = await generateKeyPair('EdDSA', { extractable: true })
-    var ed = {
-      use: 'sig',
-      kid: 'A',
-      alg: 'EdDSA',
-      ...await exportJWK(privateKey)
-    }
-  }
 
-  {
-    let { publicKey, privateKey } = await generateKeyPair('RS256', { extractable: true })
-    var rsa = {
-      use: 'sig',
-      kid: 'B',
-      alg: 'RS256',
-      ...await exportJWK(privateKey)
-    }
-  }
-  return { keys: [ed, rsa] }
-}
