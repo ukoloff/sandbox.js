@@ -1,6 +1,6 @@
+import { exportJWK, generateKeyPair } from "jose"
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { generateKeyPair, exportJWK } from "jose"
 
 export async function makeKeys() {
   const f = join(import.meta.dirname, '..', '.db', 'jwks.json')
@@ -15,7 +15,7 @@ export async function makeKeys() {
 
 async function newKeys() {
   {
-    let { publicKey, privateKey } = await generateKeyPair('EdDSA', { extractable: true });
+    let { privateKey } = await generateKeyPair('EdDSA', { extractable: true });
     var ed = {
       use: 'sig',
       kid: 'A',
@@ -25,7 +25,7 @@ async function newKeys() {
   }
 
   {
-    let { publicKey, privateKey } = await generateKeyPair('RS256', { extractable: true });
+    let { privateKey } = await generateKeyPair('RS256', { extractable: true });
     var rsa = {
       use: 'sig',
       kid: 'B',

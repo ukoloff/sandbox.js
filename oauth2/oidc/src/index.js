@@ -1,6 +1,6 @@
+import express from 'express'
 import { join } from 'node:path'
 import { Provider } from "oidc-provider"
-import express from 'express'
 import { makeKeys } from "./jwks.js"
 
 // https://github.com/panva/node-oidc-provider/blob/main/example/express.js
