@@ -11,6 +11,8 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "oidc-provider": "^9.6.0"
+    "express": "^5.2.1",
+    "oidc-provider": "^9.6.0",
+    "pug": "^3.0.3"
   }
 }
