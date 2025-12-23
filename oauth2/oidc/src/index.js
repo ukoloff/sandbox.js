@@ -1,3 +1,4 @@
+import { join } from 'node:path'
 import { Provider } from "oidc-provider"
 import express from 'express'
 import { makeKeys } from "./jwks.js"
@@ -33,15 +34,18 @@ const provider = new Provider(ISSUER, {
 })
 
 const app = express()
+app.set('views', join(import.meta.dirname, 'views'))
+app.set('view engine', 'pug')
 app.use(PREFIX, provider.callback())
 app.get('/', home)
 
 let server = app.listen(PORT, $ => {
-  console.log(`application is listening on port ${PORT}, check ${BASE} and ${ISSUER}/.well-known/openid-configuration`)
+  console.log(`application is listening on port ${PORT}, head to: ${BASE}`)
 })
 
 function home(req, res) {
-  res.send(`<h1>Hello, world!</h1>
-    <li>See <a href="${ISSUER}/.well-known/openid-configuration">Discovery document</a>
-`)
+  res.render('home', {
+    title: 'Hello, world',
+    url: `${ISSUER}/.well-known/openid-configuration`
+  })
 }
