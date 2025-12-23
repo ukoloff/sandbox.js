@@ -50,5 +50,5 @@ async function makeKeys() {
       ...await exportJWK(privateKey)
     }
   }
-  return {keys: [ed, rsa]}
+  return { keys: [ed, rsa] }
 }
