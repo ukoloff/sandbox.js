@@ -15,15 +15,16 @@ export async function makeKeys() {
 }
 
 async function newKeys() {
-  let result = []
-  for (let alg of ['EdDSA', 'ES384', 'RS256']) {
-    let { privateKey } = await generateKeyPair(alg, { extractable: true });
-    result.push({
-      use: 'sig',
-      kid: randomUUID(),
-      alg,
-      ...await exportJWK(privateKey)
-    })
+  return {
+    keys: await Promise.all(
+      ['EdDSA', 'ES384', 'RS256'].map(async alg => {
+        let { privateKey } = await generateKeyPair(alg, { extractable: true })
+        return {
+          use: 'sig',
+          kid: randomUUID(),
+          alg,
+          ...await exportJWK(privateKey)
+        }
+      }))
   }
-  return { keys: result }
 }
