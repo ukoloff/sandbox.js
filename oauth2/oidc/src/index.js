@@ -5,8 +5,9 @@ import { makeKeys } from "./jwks.js"
 // https://github.com/panva/node-oidc-provider/blob/main/example/express.js
 const {
   PORT = 3000,
+  BASE = `http://localhost:${PORT}`,
   PREFIX = '/realms/uxm',
-  ISSUER = `http://localhost:${PORT}${PREFIX}` } = process.env
+  ISSUER = `${BASE}${PREFIX}` } = process.env
 
 await makeKeys()
 
@@ -33,8 +34,14 @@ const provider = new Provider(ISSUER, {
 
 const app = express()
 app.use(PREFIX, provider.callback())
+app.get('/', home)
+
 let server = app.listen(PORT, $ => {
-  console.log(`application is listening on port ${PORT}, check  ${ISSUER}/.well-known/openid-configuration`)
+  console.log(`application is listening on port ${PORT}, check ${BASE} and ${ISSUER}/.well-known/openid-configuration`)
 })
 
-
+function home(req, res) {
+  res.send(`<h1>Hello, world!</h1>
+    <li>See <a href="${ISSUER}/.well-known/openid-configuration">Discovery document</a>
+`)
+}
