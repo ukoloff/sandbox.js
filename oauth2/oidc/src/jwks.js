@@ -17,14 +17,18 @@ export async function makeKeys() {
 async function newKeys() {
   return {
     keys: await Promise.all(
-      ['EdDSA', 'ES384', 'RS256'].map(async alg => {
-        let { privateKey } = await generateKeyPair(alg, { extractable: true })
-        return {
-          use: 'sig',
-          kid: randomUUID(),
-          alg,
-          ...await exportJWK(privateKey)
-        }
-      }))
+      ['EdDSA', 'ES384', 'RS256']
+        .map(newKey))
+  }
+}
+
+async function newKey(alg) {
+  let { privateKey } = await generateKeyPair(alg, { extractable: true })
+
+  return {
+    use: 'sig',
+    kid: randomUUID(),
+    alg,
+    ...await exportJWK(privateKey)
   }
 }
