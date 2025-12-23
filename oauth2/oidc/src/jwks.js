@@ -1,4 +1,5 @@
 import { exportJWK, generateKeyPair } from "jose"
+import { randomUUID } from "node:crypto"
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
@@ -14,24 +15,15 @@ export async function makeKeys() {
 }
 
 async function newKeys() {
-  {
-    let { privateKey } = await generateKeyPair('EdDSA', { extractable: true });
-    var ed = {
+  let result = []
+  for (let alg of ['EdDSA', 'ES384', 'RS256']) {
+    let { privateKey } = await generateKeyPair(alg, { extractable: true });
+    result.push({
       use: 'sig',
-      kid: 'A',
-      alg: 'EdDSA',
+      kid: randomUUID(),
+      alg,
       ...await exportJWK(privateKey)
-    };
+    })
   }
-
-  {
-    let { privateKey } = await generateKeyPair('RS256', { extractable: true });
-    var rsa = {
-      use: 'sig',
-      kid: 'B',
-      alg: 'RS256',
-      ...await exportJWK(privateKey)
-    };
-  }
-  return { keys: [ed, rsa] };
+  return { keys: result }
 }
