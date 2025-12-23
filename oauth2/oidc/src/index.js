@@ -3,7 +3,10 @@ import express from 'express'
 import { makeKeys } from "./jwks.js"
 
 // https://github.com/panva/node-oidc-provider/blob/main/example/express.js
-const { PORT = 3000, ISSUER = `http://localhost:${PORT}` } = process.env
+const {
+  PORT = 3000,
+  PREFIX = '/realms/uxm',
+  ISSUER = `http://localhost:${PORT}${PREFIX}` } = process.env
 
 await makeKeys()
 
@@ -29,7 +32,7 @@ const provider = new Provider(ISSUER, {
 })
 
 const app = express()
-app.use(provider.callback())
+app.use(PREFIX, provider.callback())
 let server = app.listen(PORT, $ => {
   console.log(`application is listening on port ${PORT}, check  ${ISSUER}/.well-known/openid-configuration`)
 })
