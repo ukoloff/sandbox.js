@@ -71,7 +71,7 @@ async function callback(req, res) {
     pkceCodeVerifier: req.session.code_verifier,
     idTokenExpected: true,
   })
-  res.json(tokens)
+  res.json({ tokens, claims: tokens.claims() })
 }
 
 async function ensureConfig() {
