@@ -40,7 +40,7 @@ async function login(req, res) {
     code_challenge,
     code_challenge_method: 'S256',
   }
-  if (1 || !config.serverMetadata().supportsPKCE()) {
+  if (!config.serverMetadata().supportsPKCE()) {
     /**
      * We cannot be sure the server supports PKCE so we're going to use state too.
      * Use of PKCE is backwards compatible even if the AS doesn't support it which
