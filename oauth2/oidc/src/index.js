@@ -22,6 +22,7 @@ const provider = new Provider(ISSUER, {
       client_id: "foo",
       client_secret: "bar",
       redirect_uris: ['http://localhost:3000/self/callback'],
+      post_logout_redirect_uris: ['http://localhost:3000/'],
       // ... other client properties
     },
   ],
