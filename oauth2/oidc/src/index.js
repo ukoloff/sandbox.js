@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import { Provider } from "oidc-provider"
 import { makeKeys } from "./jwks.js"
 import kcloak from './kcloak.js'
+import self from './self.js'
 
 // https://github.com/panva/node-oidc-provider/blob/main/example/express.js
 const {
@@ -20,7 +21,7 @@ const provider = new Provider(ISSUER, {
     {
       client_id: "foo",
       client_secret: "bar",
-      redirect_uris: ["http://localhost:8080/cb"],
+      redirect_uris: ['http://localhost:3000/self/callback'],
       // ... other client properties
     },
   ],
@@ -39,6 +40,7 @@ app.set('views', join(import.meta.dirname, 'views'))
 app.set('view engine', 'pug')
 app.use(PREFIX, provider.callback())
 app.use('/kcloak', kcloak)
+app.use('/self', self)
 app.get('/', home)
 
 let server = app.listen(PORT, $ => {
