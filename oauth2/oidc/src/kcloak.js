@@ -4,7 +4,7 @@ import { randomUUID } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { parseEnv } from 'node:util'
-import { authorizationCodeGrant, buildAuthorizationUrl, calculatePKCECodeChallenge, discovery, randomNonce, randomPKCECodeVerifier, randomState } from 'openid-client'
+import { authorizationCodeGrant, buildAuthorizationUrl, calculatePKCECodeChallenge, discovery, fetchUserInfo, randomNonce, randomPKCECodeVerifier, randomState } from 'openid-client'
 
 
 let kcloak = Router()
@@ -74,7 +74,9 @@ async function callback(req, res) {
     pkceCodeVerifier: req.session.code_verifier,
     idTokenExpected: true,
   })
-  res.json({ tokens, claims: tokens.claims() })
+  let claims = tokens.claims()
+  let user = await fetchUserInfo(config, tokens.access_token, claims.sub)
+  res.json({ tokens, claims, user })
 }
 
 async function ensureConfig() {
