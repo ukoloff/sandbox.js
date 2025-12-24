@@ -2,6 +2,7 @@ import express from 'express'
 import { join } from 'node:path'
 import { Provider } from "oidc-provider"
 import { makeKeys } from "./jwks.js"
+import kcloak from './kcloak.js'
 
 // https://github.com/panva/node-oidc-provider/blob/main/example/express.js
 const {
@@ -37,6 +38,7 @@ const app = express()
 app.set('views', join(import.meta.dirname, 'views'))
 app.set('view engine', 'pug')
 app.use(PREFIX, provider.callback())
+app.use('/kcloak', kcloak)
 app.get('/', home)
 
 let server = app.listen(PORT, $ => {
