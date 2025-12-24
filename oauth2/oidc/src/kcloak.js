@@ -60,7 +60,7 @@ async function login(req, res) {
 
 async function logout(req, res) {
   await ensureConfig()
-  res.send('Logout')
+  res.redirect(config.serverMetadata()['end_session_endpoint'])
 }
 
 async function callback(req, res) {
