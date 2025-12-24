@@ -8,14 +8,14 @@ kcloak.get('/logout', logout)
 kcloak.get('/callback', callback)
 
 
-function login(req, res) {
+async function login(req, res) {
   res.send('Login')
 }
 
-function logout(req, res) {
+async function logout(req, res) {
   res.send('Logout')
 }
 
-function callback(req, res) {
+async function callback(req, res) {
   res.send('Callback')
 }
