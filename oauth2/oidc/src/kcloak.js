@@ -4,7 +4,7 @@ import { randomUUID } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { parseEnv } from 'node:util'
-import { buildAuthorizationUrl, calculatePKCECodeChallenge, discovery, randomNonce, randomPKCECodeVerifier, randomState } from 'openid-client'
+import { authorizationCodeGrant, buildAuthorizationUrl, calculatePKCECodeChallenge, discovery, randomNonce, randomPKCECodeVerifier, randomState } from 'openid-client'
 
 
 let kcloak = Router()
@@ -50,12 +50,12 @@ async function login(req, res) {
     var state = randomState()
     parameters.state = state
     req.session.state = state
-    var nonce = randomNonce()
-    parameters.nonce = nonce
-    req.session.nonce = nonce
+    // var nonce = randomNonce()
+    // parameters.nonce = nonce
+    // req.session.nonce = nonce
   }
   let redirectTo = buildAuthorizationUrl(config, parameters)
-  res.send('Login: ' + redirectTo)
+  res.redirect(redirectTo)
 }
 
 async function logout(req, res) {
@@ -65,7 +65,13 @@ async function logout(req, res) {
 
 async function callback(req, res) {
   await ensureConfig()
-  res.send('Callback')
+  let tokens = await authorizationCodeGrant(config, new URL(`http://localhost:3000/kcloak${req.url}`), {
+    // expectedNonce: req.session.nonce,
+    expectedState: req.session.state,
+    pkceCodeVerifier: req.session.code_verifier,
+    idTokenExpected: true,
+  })
+  res.json(tokens)
 }
 
 async function ensureConfig() {
