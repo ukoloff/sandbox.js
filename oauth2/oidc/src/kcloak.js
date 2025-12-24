@@ -60,7 +60,10 @@ async function login(req, res) {
 
 async function logout(req, res) {
   await ensureConfig()
-  res.redirect(config.serverMetadata()['end_session_endpoint'])
+  let url = new URL(config.serverMetadata()['end_session_endpoint'])
+  url.searchParams.set('post_logout_redirect_uri', 'http://localhost:3000/')
+  url.searchParams.set('client_id', config.clientMetadata().client_id)
+  res.redirect(url)
 }
 
 async function callback(req, res) {
