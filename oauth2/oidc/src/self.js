@@ -51,7 +51,14 @@ async function logout(req, res) {
 
 async function callback(req, res) {
   await ensureConfig()
-  res.send('callback')
+  let tokens = await authorizationCodeGrant(config, new URL(`http://localhost:3000/self${req.url}`), {
+    expectedState: req.session.state,
+    pkceCodeVerifier: req.session.code_verifier,
+    idTokenExpected: true,
+  })
+  let claims = tokens.claims()
+  let user = await fetchUserInfo(config, tokens.access_token, claims.sub)
+  res.json({ tokens, claims, user })
 }
 
 async function ensureConfig() {
