@@ -41,7 +41,7 @@ app.set('views', join(import.meta.dirname, 'views'))
 app.set('view engine', 'pug')
 app.use(PREFIX, provider.callback())
 app.use('/kcloak', kcloak)
-app.use('/self', self)
+self(app, provider)
 app.get('/', home)
 
 let server = app.listen(PORT, $ => {

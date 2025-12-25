@@ -6,23 +6,26 @@ import session from 'express-session'
 import { randomUUID } from 'node:crypto'
 import { authorizationCodeGrant, buildAuthorizationUrl, calculatePKCECodeChallenge, discovery, fetchUserInfo, randomPKCECodeVerifier, randomState, allowInsecureRequests } from 'openid-client'
 
-let self = Router()
-export default self
+let provider, config
 
-let sess = session({
-  name: 'self',
-  secret: randomUUID(),
-  cookie: {
-    path: '/self'
-  },
-})
-self.use(sess)
+export default function self(app, aProvider) {
+  provider = aProvider
+  let self = Router()
+  app.use('/self', self)
 
-let config
+  let sess = session({
+    name: 'self',
+    secret: randomUUID(),
+    cookie: {
+      path: '/self'
+    },
+  })
+  self.use(sess)
 
-self.get('/login', login)
-self.get('/logout', logout)
-self.get('/callback', callback)
+  self.get('/login', login)
+  self.get('/logout', logout)
+  self.get('/callback', callback)
+}
 
 async function login(req, res) {
   await ensureConfig()
