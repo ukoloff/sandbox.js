@@ -21,7 +21,7 @@ const provider = new Provider(ISSUER, {
   jwks: await makeKeys(),
   adapter: await adapter(),
   findAccount: inter.findAccount,
-  scopes: ['openid', 'offline_access', 'email', 'profile'],
+  // scopes: ['openid', 'offline_access', 'email', 'profile'],
   claims: {
     address: ['address'],
     email: ['email', 'email_verified'],
