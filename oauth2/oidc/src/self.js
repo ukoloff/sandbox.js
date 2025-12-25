@@ -6,10 +6,9 @@ import session from 'express-session'
 import { randomUUID } from 'node:crypto'
 import { authorizationCodeGrant, buildAuthorizationUrl, calculatePKCECodeChallenge, discovery, fetchUserInfo, randomPKCECodeVerifier, randomState, allowInsecureRequests } from 'openid-client'
 
-let provider, config
+let config
 
-export default function self(app, aProvider) {
-  provider = aProvider
+export default function self(app) {
   let self = Router()
   app.use('/self', self)
 

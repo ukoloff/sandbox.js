@@ -33,6 +33,13 @@ const provider = new Provider(ISSUER, {
     userinfo: '/protocol/openid-connect/userinfo',
     end_session: '/protocol/openid-connect/logout',
     pushed_authorization_request: '/protocol/openid-connect/ext/par/request',
+  },
+  ttl: {
+    Interaction: 60 * 60,
+    Session: 1209600, /* 14 days in seconds */
+    Grant: 1209600, /* 14 days in seconds */
+    AccessToken: 60 * 60,
+    IdToken: 60 * 60,
   }
 })
 
@@ -41,7 +48,7 @@ app.set('views', join(import.meta.dirname, 'views'))
 app.set('view engine', 'pug')
 app.use(PREFIX, provider.callback())
 app.use('/kcloak', kcloak)
-self(app, provider)
+self(app)
 app.get('/', home)
 
 let server = app.listen(PORT, $ => {
