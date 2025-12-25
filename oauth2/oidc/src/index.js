@@ -4,6 +4,7 @@ import { Provider } from "oidc-provider"
 import { makeKeys } from "./jwks.js"
 import kcloak from './kcloak.js'
 import self from './self.js'
+import * as inter from './inter.js'
 
 // https://github.com/panva/node-oidc-provider/blob/main/example/express.js
 const {
@@ -40,7 +41,13 @@ const provider = new Provider(ISSUER, {
     Grant: 1209600, /* 14 days in seconds */
     AccessToken: 60 * 60,
     IdToken: 60 * 60,
-  }
+  },
+  interactions: {
+    url: inter.url,
+  },
+  features: {
+    devInteractions: { enabled: false },
+  },
 })
 
 const app = express()
@@ -50,6 +57,7 @@ app.use(PREFIX, provider.callback())
 app.use('/kcloak', kcloak)
 self(app)
 app.get('/', home)
+inter.install(app, provider)
 
 let server = app.listen(PORT, $ => {
   console.log(`application is listening on port ${PORT}, head to: ${BASE}`)
