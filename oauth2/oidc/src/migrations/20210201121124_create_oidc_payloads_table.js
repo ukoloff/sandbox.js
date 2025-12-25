@@ -1,7 +1,7 @@
 //
 // https://github.com/ydarma/oidc-provider-knex-adapter
 //
-exports.up = function (knex) {
+export function up(knex) {
   return knex.schema.hasTable("oidc_payloads").then(async b => {
     if (!b)
       await knex.schema.createTable("oidc_payloads", t => {
@@ -18,6 +18,6 @@ exports.up = function (knex) {
   });
 };
 
-exports.down = function (knex) {
+export function down(knex) {
   return knex.schema.dropTable("oidc_payloads");
 };
