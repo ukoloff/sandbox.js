@@ -8,12 +8,13 @@ html(lang="ru")
     form(method="post")
       label Учётная запись
         br
-        input(type="text", autofocus, required, name="u")
+        input(type="text", autofocus=!u, required, name="u", value=u)
       br
       label Пароль
         br
-        input(type="password", required, name="p")
+        input(type="password", required, autofocus=!!u, name="p")
       br
       button(type="submit") Авторизация!
+      span= err
     hr
     a(href="/") Home

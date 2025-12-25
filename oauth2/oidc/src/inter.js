@@ -25,11 +25,16 @@ async function form(req, res) {
 }
 
 async function post(req, res) {
+  if (req.body.p != '.') {
+    res.render('login', {
+      u: req.body.u,
+      err: 'Неверный логин или пароль!'
+    })
+  }
   let details = await provider.interactionDetails(req, res)
   let result = {
     login: {
       accountId: req.body.u,
-      oops: "Hi!",
     }
   }
   await provider.interactionFinished(req, res, result, { mergeWithLastSubmission: false });
