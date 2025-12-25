@@ -53,6 +53,7 @@ const provider = new Provider(ISSUER, {
 const app = express()
 app.set('views', join(import.meta.dirname, 'views'))
 app.set('view engine', 'pug')
+app.use(express.urlencoded({ extended: true }))
 app.use(PREFIX, provider.callback())
 app.use('/kcloak', kcloak)
 self(app)
