@@ -29,6 +29,7 @@ async function post(req, res) {
       u: req.body.u,
       err: 'Неверный логин или пароль!'
     })
+    return
   }
   let details = await provider.interactionDetails(req, res)
   let result = {
@@ -68,4 +69,16 @@ async function grantAll(details) {
     consent.grantId = grantId2
   }
   return { consent }
+}
+
+export async function findAccount(ctx, sub, token) {
+  return {
+    accountId: sub,
+    async claims(use, scope, claims, rejected) {
+      return {
+        sub,
+        email: 'Medved',
+      }
+    },
+  }
 }

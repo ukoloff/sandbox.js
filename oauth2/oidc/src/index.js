@@ -20,6 +20,8 @@ const provider = new Provider(ISSUER, {
   // refer to the documentation for other available configuration
   jwks: await makeKeys(),
   adapter: await adapter(),
+  findAccount: inter.findAccount,
+  scopes: ['openid', 'offline_access', 'email', 'profile'],
   clients: [
     {
       client_id: "foo",
