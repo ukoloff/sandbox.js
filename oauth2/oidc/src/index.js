@@ -15,11 +15,11 @@ const {
   ISSUER = `${BASE}${PREFIX}` } = process.env
 
 await makeKeys()
-await adapter()
 
 const provider = new Provider(ISSUER, {
   // refer to the documentation for other available configuration
   jwks: await makeKeys(),
+  adapter: await adapter(),
   clients: [
     {
       client_id: "foo",
