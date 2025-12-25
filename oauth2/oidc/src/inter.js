@@ -77,7 +77,7 @@ export async function findAccount(ctx, sub, token) {
     async claims(use, scope, claims, rejected) {
       return {
         sub,
-        email: 'Medved',
+        email: `${sub}@no.where`,
       }
     },
   }
