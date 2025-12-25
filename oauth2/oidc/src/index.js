@@ -39,12 +39,16 @@ const provider = new Provider(ISSUER, {
     end_session: '/protocol/openid-connect/logout',
     pushed_authorization_request: '/protocol/openid-connect/ext/par/request',
   },
+  async issueRefreshToken(ctx, client, code) {
+    return true
+  },
   ttl: {
     Interaction: 60 * 60,
     Session: 1209600, /* 14 days in seconds */
     Grant: 1209600, /* 14 days in seconds */
     AccessToken: 60 * 60,
     IdToken: 60 * 60,
+    RefreshToken: 14 * 24 * 60 * 60,
   },
   interactions: {
     url: inter.url,
