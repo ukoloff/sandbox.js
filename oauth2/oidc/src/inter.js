@@ -19,34 +19,7 @@ async function form(req, res) {
       res.render('login')
       break
     case 'consent':
-      let { grantId } = details
-      if (grantId) {
-        var grant = await provider.Grant.find(grantId)
-      } else {
-        grant = new provider.Grant({
-          accountId: details.session.accountId,
-          clientId: details.params.client_id,
-        })
-      }
-      let d = details.prompt.details
-
-      if (d.missingOIDCScope) {
-        grant.addOIDCScope(d.missingOIDCScope.join(' '));
-      }
-      if (d.missingOIDCClaims) {
-        grant.addOIDCClaims(d.missingOIDCClaims);
-      }
-      if (d.missingResourceScopes) {
-        for (const [indicator, scopes] of Object.entries(d.missingResourceScopes)) {
-          grant.addResourceScope(indicator, scopes.join(' '));
-        }
-      }
-      let grantId2 = await grant.save()
-      const consent = {};
-      if (!grantId) {
-        consent.grantId = grantId2
-      }
-      await provider.interactionFinished(req, res, { consent }, { mergeWithLastSubmission: true })
+      await provider.interactionFinished(req, res, await grantAll(details), { mergeWithLastSubmission: true })
       break
   }
 }
@@ -56,7 +29,39 @@ async function post(req, res) {
   let result = {
     login: {
       accountId: req.body.u,
+      oops: "Hi!",
     }
   }
   await provider.interactionFinished(req, res, result, { mergeWithLastSubmission: false });
+}
+
+async function grantAll(details) {
+  let { grantId } = details
+  if (grantId) {
+    var grant = await provider.Grant.find(grantId)
+  } else {
+    grant = new provider.Grant({
+      accountId: details.session.accountId,
+      clientId: details.params.client_id,
+    })
+  }
+  let d = details.prompt.details
+
+  if (d.missingOIDCScope) {
+    grant.addOIDCScope(d.missingOIDCScope.join(' '));
+  }
+  if (d.missingOIDCClaims) {
+    grant.addOIDCClaims(d.missingOIDCClaims);
+  }
+  if (d.missingResourceScopes) {
+    for (const [indicator, scopes] of Object.entries(d.missingResourceScopes)) {
+      grant.addResourceScope(indicator, scopes.join(' '));
+    }
+  }
+  let grantId2 = await grant.save()
+  const consent = {};
+  if (!grantId) {
+    consent.grantId = grantId2
+  }
+  return { consent }
 }
