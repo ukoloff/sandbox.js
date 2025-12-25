@@ -41,7 +41,7 @@ async function login(req, res) {
     req.session.state = state
   }
   let redirectTo = buildAuthorizationUrl(config, parameters)
-  res.redirect(redirectTo)
+  res.redirect(redirectTo.href)
 }
 
 async function logout(req, res) {
