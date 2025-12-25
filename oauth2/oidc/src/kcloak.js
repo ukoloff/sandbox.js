@@ -67,7 +67,7 @@ async function logout(req, res) {
 
 async function callback(req, res) {
   await ensureConfig()
-  let tokens = await authorizationCodeGrant(config, new URL(`http://localhost:3000/kcloak${req.url}`), {
+  let tokens = await authorizationCodeGrant(config, new URL(`http://localhost:3000${req.originalUrl}`), {
     // expectedNonce: req.session.nonce,
     expectedState: req.session.state,
     pkceCodeVerifier: req.session.code_verifier,
