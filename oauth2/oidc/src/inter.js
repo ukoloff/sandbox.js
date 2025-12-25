@@ -13,7 +13,6 @@ export function install(app, aProvider) {
 
 async function form(req, res) {
   let details = await provider.interactionDetails(req, res)
-  console.log(details)
   switch (details.prompt.name) {
     case 'login':
       res.render('login')
