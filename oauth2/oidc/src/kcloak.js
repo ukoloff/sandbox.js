@@ -15,6 +15,8 @@ let sess = session({
   cookie: {
     path: '/kcloak'
   },
+  resave: false,
+  saveUninitialized: false,
 })
 kcloak.use(sess)
 
@@ -54,7 +56,7 @@ async function login(req, res) {
     // req.session.nonce = nonce
   }
   let redirectTo = buildAuthorizationUrl(config, parameters)
-  res.redirect(redirectTo)
+  res.redirect(redirectTo.href)
 }
 
 async function logout(req, res) {
@@ -62,7 +64,7 @@ async function logout(req, res) {
   let url = new URL(config.serverMetadata()['end_session_endpoint'])
   url.searchParams.set('post_logout_redirect_uri', 'http://localhost:3000/')
   url.searchParams.set('client_id', config.clientMetadata().client_id)
-  res.redirect(url)
+  res.redirect(url.href)
 }
 
 async function callback(req, res) {

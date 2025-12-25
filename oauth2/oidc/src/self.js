@@ -18,6 +18,8 @@ export default function self(app) {
     cookie: {
       path: '/self'
     },
+    resave: false,
+    saveUninitialized: false,
   })
   self.use(sess)
 
@@ -51,7 +53,7 @@ async function logout(req, res) {
   let url = new URL(config.serverMetadata()['end_session_endpoint'])
   url.searchParams.set('post_logout_redirect_uri', 'http://localhost:3000/')
   url.searchParams.set('client_id', config.clientMetadata().client_id)
-  res.redirect(url)
+  res.redirect(url.href)
 }
 
 async function callback(req, res) {
