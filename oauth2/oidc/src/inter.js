@@ -5,6 +5,7 @@ export async function url(ctx, interaction) {
 }
 
 let provider
+
 export function install(app, aProvider) {
   provider = aProvider
   app.get('/inter/:uid', form)
@@ -71,14 +72,4 @@ async function grantAll(details) {
   return { consent }
 }
 
-export async function findAccount(ctx, sub, token) {
-  return {
-    accountId: sub,
-    async claims(use, scope, claims, rejected) {
-      return {
-        sub,
-        email: `${sub}@no.where`,
-      }
-    },
-  }
-}
+

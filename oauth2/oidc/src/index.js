@@ -5,6 +5,7 @@ import { makeKeys } from "./jwks.js"
 import kcloak from './kcloak.js'
 import self from './self.js'
 import * as inter from './inter.js'
+import findAccount from './account.js'
 import adapter from './adapter.js'
 
 // https://github.com/panva/node-oidc-provider/blob/main/example/express.js
@@ -20,7 +21,7 @@ const provider = new Provider(ISSUER, {
   // refer to the documentation for other available configuration
   jwks: await makeKeys(),
   adapter: await adapter(),
-  findAccount: inter.findAccount,
+  findAccount,
   // scopes: ['openid', 'offline_access', 'email', 'profile'],
   claims: {
     address: ['address'],
