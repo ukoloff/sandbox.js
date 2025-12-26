@@ -1,15 +1,15 @@
 import express from 'express'
 
-export async function url(ctx, interaction) {
-  return `/inter/${interaction.uid}`
-}
-
 let provider
+
+export async function url(ctx, interaction) {
+  return `/login/${interaction.uid}`
+}
 
 export function install(app, aProvider) {
   provider = aProvider
-  app.get('/inter/:uid', form)
-  app.post('/inter/:uid', express.urlencoded({ extended: true }), post)
+  app.get('/login/:uid', form)
+  app.post('/login/:uid', express.urlencoded({ extended: true }), post)
 }
 
 async function form(req, res) {
@@ -71,5 +71,3 @@ async function grantAll(details) {
   }
   return { consent }
 }
-
-

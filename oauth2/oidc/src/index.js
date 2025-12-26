@@ -4,7 +4,7 @@ import { Provider } from "oidc-provider"
 import { makeKeys } from "./jwks.js"
 import kcloak from './kcloak.js'
 import self from './self.js'
-import * as inter from './inter.js'
+import { url, install } from './inter.js'
 import findAccount from './account.js'
 import adapter from './adapter.js'
 
@@ -60,7 +60,7 @@ const provider = new Provider(ISSUER, {
     RefreshToken: 14 * 24 * 60 * 60,
   },
   interactions: {
-    url: inter.url,
+    url,
   },
   features: {
     devInteractions: { enabled: false },
@@ -74,7 +74,7 @@ app.use(PREFIX, provider.callback())
 app.use('/kcloak', kcloak)
 self(app)
 app.get('/', home)
-inter.install(app, provider)
+install(app, provider)
 
 let server = app.listen(PORT, $ => {
   console.log(`application is listening on port ${PORT}, head to: ${BASE}`)
