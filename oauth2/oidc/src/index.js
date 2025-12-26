@@ -4,7 +4,7 @@ import { Provider } from "oidc-provider"
 import { makeKeys } from "./jwks.js"
 import kcloak from './kcloak.js'
 import self from './self.js'
-import { url, install } from './inter.js'
+import { url, install } from './login.js'
 import findAccount from './account.js'
 import adapter from './adapter.js'
 

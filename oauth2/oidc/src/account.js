@@ -1,4 +1,3 @@
-
 export default async function findAccount(ctx, sub, token) {
   return {
     accountId: sub,
@@ -6,7 +5,7 @@ export default async function findAccount(ctx, sub, token) {
       return {
         sub,
         email: `${sub}@no.where`,
-      };
+      }
     },
-  };
+  }
 }
