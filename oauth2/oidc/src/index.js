@@ -7,6 +7,7 @@ import self from './self.js'
 import { url, install } from './login.js'
 import findAccount from './account.js'
 import adapter from './adapter.js'
+import logout from './logout.js'
 
 // https://github.com/panva/node-oidc-provider/blob/main/example/express.js
 const {
@@ -16,6 +17,8 @@ const {
   ISSUER = `${BASE}${PREFIX}` } = process.env
 
 await makeKeys()
+
+const app = express()
 
 const provider = new Provider(ISSUER, {
   // refer to the documentation for other available configuration
@@ -64,10 +67,10 @@ const provider = new Provider(ISSUER, {
   },
   features: {
     devInteractions: { enabled: false },
+    rpInitiatedLogout: logout(app),
   },
 })
 
-const app = express()
 app.set('views', join(import.meta.dirname, 'views'))
 app.set('view engine', 'pug')
 app.use(PREFIX, provider.callback())
