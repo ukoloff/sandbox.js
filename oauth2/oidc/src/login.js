@@ -16,7 +16,7 @@ async function form(req, res) {
   let details = await provider.interactionDetails(req, res)
   switch (details.prompt.name) {
     case 'login':
-      res.render('login')
+      res.render('login', { title: 'Авторизация' })
       break
     case 'consent':
       await provider.interactionFinished(req, res, await grantAll(details), { mergeWithLastSubmission: true })

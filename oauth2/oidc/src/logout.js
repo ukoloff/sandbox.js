@@ -13,9 +13,9 @@ export default function setApp(anApp) {
 let render = promisify((...args) => app.render(...args))
 
 async function logoutSource(ctx, form) {
-  ctx.body = await render('logout', { form })
+  ctx.body = await render('logout', { form, title: 'Выйти?' })
 }
 
 async function postLogoutSuccessSource(ctx) {
-  ctx.body = await render('logout-ok')
+  ctx.body = await render('logout-ok', { title: 'Пока!' })
 }

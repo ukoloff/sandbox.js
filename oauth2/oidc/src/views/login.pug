@@ -1,20 +1,14 @@
-doctype html
-html(lang="ru")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title Авторизация
-  body
-    form(method="post")
-      label Учётная запись
-        br
-        input(type="text", autofocus=!u, required, name="u", value=u)
+extend layout
+
+block content
+  form(method="post")
+    label Учётная запись
       br
-      label Пароль
-        br
-        input(type="password", required, autofocus=!!u, name="p")
+      input(type="text", autofocus=!u, required, name="u", value=u)
+    br
+    label Пароль
       br
-      button(type="submit") Авторизация!
-      span= err
-    hr
-    a(href="/") Home
+      input(type="password", required, autofocus=!!u, name="p")
+    p
+    button(type="submit") Авторизация!
+    span= err

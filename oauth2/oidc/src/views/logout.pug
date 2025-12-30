@@ -1,6 +1,9 @@
-h1 Выйти из системы?
-!=  form
-button(autofocus, type='submit', form='op.logoutForm', name='logout', value='yes') Да, выйти
-|
-|
-button(type='submit', form='op.logoutForm') Нет, остаться
+extend layout
+
+block content
+  h1 Выйти из системы?
+  !=  form
+  button(autofocus, type='submit', form='op.logoutForm', name='logout', value='yes') Да, выйти
+  |
+  |
+  button(type='submit', form='op.logoutForm') Нет, остаться
