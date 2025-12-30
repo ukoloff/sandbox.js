@@ -76,6 +76,7 @@ app.set('view engine', 'pug')
 app.use(PREFIX, provider.callback())
 app.use('/kcloak', kcloak)
 self(app)
+app.use('/assets', express.static(join(import.meta.dirname, '../assets')))
 app.get('/', home)
 install(app, provider)
 
