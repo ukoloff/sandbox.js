@@ -1,0 +1,6 @@
+:root {
+  --bs-body-color: $black;
+  --bs-body-bg: #A0C0E0;
+  --bs-font-sans-serif: Verdana, Arial, sans-serif;
+  --bs-breadcrumb-divider: "»";
+}
