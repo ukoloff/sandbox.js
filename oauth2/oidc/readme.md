@@ -2,6 +2,11 @@
 
 Testing OpenID Connect server
 
+## Make symlinks
+```bat
+mklink /D assets\bootswatch ..\node_modules\bootswatch\dist
+```
+
 ## See also
 - [oidc-provider](https://github.com/panva/node-oidc-provider)
 - [openid-client](https://github.com/panva/openid-client)

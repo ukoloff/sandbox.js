@@ -3,10 +3,11 @@ html(lang="ru")
   head
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    link(rel='stylesheet', type='text/css', href='/assets/oidc.css')
+    link(rel='stylesheet', type='text/css', href='/assets/bootswatch/materia/bootstrap.min.css')
     title= title
   body
-    block content
-    block foot
-      hr
-      a(href="/") Home
+    .container-fluid
+      block content
+      block foot
+        hr
+        a(href="/") Home
