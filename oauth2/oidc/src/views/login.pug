@@ -1,14 +1,17 @@
 extend layout
 
 block content
-  form(method="post")
-    label Учётная запись
-      br
-      input(type="text", autofocus=!u, required, name="u", value=u)
-    br
-    label Пароль
-      br
-      input(type="password", required, autofocus=!!u, name="p")
-    p
-    button(type="submit") Авторизация!
-    span= err
+  //- https://codepen.io/gmanikandan-dev/details/NWOaajb
+  .row.justify-content-center.align-items-center: .col-lg-6.col-md-9.col-sm-12
+    .card.shadow: .card-body
+      form(method="post")
+        label Учётная запись
+          br
+          input(type="text", autofocus=!u, required, name="u", value=u)
+        br
+        label Пароль
+          br
+          input(type="password", required, autofocus=!!u, name="p")
+        p
+        button(type="submit") Авторизация!
+        span= err
