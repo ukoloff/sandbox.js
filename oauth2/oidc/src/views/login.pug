@@ -13,14 +13,15 @@ block content
             label Учётная запись
         .form-text.mb-3.text-center Указывать домен OMZGLOBAL\ не нужно
 
-        .input-group.mb-3
+        .input-group
           span.input-group-text.fs-2.bi.bi-key
           .form-floating
             input.form-control(type="password" required autofocus=!!u name="p" placeholder='')
             label Пароль
+        .form-text.mb-3.text-center.text-danger= err
+
         .d-grid.col-6.mx-auto
           button.btn.btn-primary.btn-default(type="submit")
             i.bi.bi-box-arrow-in-right
             |
             | Авторизация!
-        span= err
