@@ -5,13 +5,15 @@ block content
   .row.justify-content-center.align-items-center: .col-lg-6.col-md-9.col-sm-12
     .card.bg-light.shadow: .card-body
       form(method="post")
-        label(for='u') Учётная запись
         .input-group.mb-3
           span.input-group-text OMZGLOBAL\
-          input.form-control(type="text", autofocus=!u, required, name="u", id='u', value=u)
-        label(for='p') Пароль
+          .form-floating
+            input.form-control(type="text" autofocus=!u required name="u" placeholder='' value=u)
+            label Учётная запись
         .input-group.mb-3
           span.input-group-text *
-          input.form-control(type="password", required, autofocus=!!u, name="p", id='p')
+          .form-floating
+            input.form-control(type="password" required autofocus=!!u name="p" placeholder='')
+            label Пароль
         button.btn.btn-primary.btn-default(type="submit") Авторизация!
         span= err
