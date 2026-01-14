@@ -5,6 +5,7 @@ Testing OpenID Connect server
 ## Make symlinks
 ```bat
 mklink /D assets\bootswatch ..\node_modules\bootswatch\dist
+mklink /D assets\bootstrap-icons ..\node_modules\bootstrap-icons\font
 ```
 
 ## See also
