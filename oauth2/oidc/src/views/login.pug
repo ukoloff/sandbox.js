@@ -15,5 +15,9 @@ block content
           .form-floating
             input.form-control(type="password" required autofocus=!!u name="p" placeholder='')
             label Пароль
-        button.btn.btn-primary.btn-default(type="submit") Авторизация!
+        .d-grid.col-6.mx-auto
+          button.btn.btn-primary.btn-default(type="submit")
+            i.bi.bi-box-arrow-in-right
+            |
+            | Авторизация!
         span= err
