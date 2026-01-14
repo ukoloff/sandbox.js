@@ -5,11 +5,13 @@ block content
   .row.justify-content-center.align-items-center: .col-lg-6.col-md-9.col-sm-12
     .card.bg-light.shadow: .card-body
       form(method="post")
-        .input-group.mb-3
+        .input-group
           span.input-group-text.fs-2.bi.bi-person
           .form-floating
             input.form-control(type="text" autofocus=!u required name="u" placeholder='' value=u)
             label Учётная запись
+        .form-text.mb-3.text-center Указывать домен OMZGLOBAL\ не нужно
+
         .input-group.mb-3
           span.input-group-text.fs-2.bi.bi-key
           .form-floating
