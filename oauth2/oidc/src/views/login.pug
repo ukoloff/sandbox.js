@@ -20,11 +20,17 @@ block content
   .row.justify-content-center.align-items-center.mt-3: .col-lg-6.col-md-9.col-sm-12
     .card.bg-light.shadow: .card-body
       .card-title.text-center.mb-3: img(src="/assets/uxm.gif")
+
+      nav.nav.nav-pills.justify-content-center.mb-3
+        a.nav-link.active(href='#') OMZGLOBAL
+        a.nav-link(href='#') Без пароля
+        a.nav-link(href='#') SNR
+
       form(method="post")
-        +AD(domain='OMZGLOBAL')
+        +AD('OMZGLOBAL')
 
         .d-grid.col-6.mx-auto
-          button.btn.btn-primary.btn-default(type="submit")
+          button.btn.btn-success(type="submit")
             i.bi.bi-box-arrow-in-right
             |
             | Авторизация!
