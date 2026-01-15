@@ -1,24 +1,27 @@
 extend layout
 
+mixin AD(domain)
+  .input-group
+    span.input-group-text.fs-2.bi.bi-person
+    .form-floating
+      input.form-control(type="text" autofocus=!u required name="u" placeholder='' value=u)
+      label Учётная запись
+  .form-text.mb-3.text-center Указывать домен #{domain}\ не нужно
+
+  .input-group
+    span.input-group-text.fs-2.bi.bi-key
+    .form-floating
+      input.form-control(type="password" required autofocus=!!u name="p" placeholder='')
+      label Пароль
+  .form-text.mb-3.text-center.text-danger= err
+
 block content
   //- https://codepen.io/gmanikandan-dev/details/NWOaajb
   .row.justify-content-center.align-items-center.mt-3: .col-lg-6.col-md-9.col-sm-12
     .card.bg-light.shadow: .card-body
       .card-title.text-center.mb-3: img(src="/assets/uxm.gif")
       form(method="post")
-        .input-group
-          span.input-group-text.fs-2.bi.bi-person
-          .form-floating
-            input.form-control(type="text" autofocus=!u required name="u" placeholder='' value=u)
-            label Учётная запись
-        .form-text.mb-3.text-center Указывать домен OMZGLOBAL\ не нужно
-
-        .input-group
-          span.input-group-text.fs-2.bi.bi-key
-          .form-floating
-            input.form-control(type="password" required autofocus=!!u name="p" placeholder='')
-            label Пароль
-        .form-text.mb-3.text-center.text-danger= err
+        +AD(domain='OMZGLOBAL')
 
         .d-grid.col-6.mx-auto
           button.btn.btn-primary.btn-default(type="submit")
