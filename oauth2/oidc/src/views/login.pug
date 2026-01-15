@@ -1,19 +1,20 @@
 extend layout
 
 mixin AD(domain)
-  .input-group
-    span.input-group-text.fs-2.bi.bi-person
-    .form-floating
-      input.form-control(type="text" autofocus=!u required name="u" placeholder='' value=u)
-      label Учётная запись
-  .form-text.mb-3.text-center Указывать домен #{domain}\ не нужно
+  div
+    .input-group
+      span.input-group-text.fs-2.bi.bi-person
+      .form-floating
+        input.form-control(type="text" autofocus=!u required name="u" placeholder='' value=u)
+        label Учётная запись
+    .form-text.mb-3.text-center Указывать домен #{domain}\ не нужно
 
-  .input-group
-    span.input-group-text.fs-2.bi.bi-key
-    .form-floating
-      input.form-control(type="password" required autofocus=!!u name="p" placeholder='')
-      label Пароль
-  .form-text.mb-3.text-center.text-danger= err
+    .input-group
+      span.input-group-text.fs-2.bi.bi-key
+      .form-floating
+        input.form-control(type="password" required autofocus=!!u name="p" placeholder='')
+        label Пароль
+    .form-text.mb-3.text-center.text-danger= err
 
 block content
   //- https://codepen.io/gmanikandan-dev/details/NWOaajb
@@ -21,13 +22,16 @@ block content
     .card.bg-light.shadow: .card-body
       .card-title.text-center.mb-3: img(src="/assets/uxm.gif")
 
-      nav.nav.nav-pills.justify-content-center.mb-3
-        a.nav-link.active(href='#') OMZGLOBAL
-        a.nav-link(href='#') Без пароля
-        a.nav-link(href='#') SNR
-
       form(method="post")
-        +AD('OMZGLOBAL')
+
+        nav.nav.nav-pills.justify-content-center.mb-3
+          a.nav-link.active(href='#') OMZGLOBAL
+          a.nav-link(href='#') Без пароля
+          a.nav-link(href='#') SNR
+
+        #pages
+          +AD('OMZGLOBAL')
+          //- +AD('SNR')
 
         .d-grid.col-6.mx-auto
           button.btn.btn-success(type="submit")
