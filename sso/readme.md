@@ -8,5 +8,12 @@ Test [node-expose-sspi]
 ```powershell
 setspn -S HTTP/eka-vm-uxm00011.snr.tmk.group stanislav.ukolov
 
-get-aduser stanislav.ukolov -Properties servicePrincipalName,userPrincipalName,msDS-KeyVersionNumber
+Get-ADUser stanislav.ukolov -Properties servicePrincipalName,userPrincipalName,msDS-KeyVersionNumber
 ```
+
+## Browser
++ `HKLM\SOFTWARE\Policies\Google\Chrome`
++ `HKLM\SOFTWARE\Policies\YandexBrowser`
++ `HKLM\SOFTWARE\Policies\Microsoft\Edge`
+
+`AuthServerAllowlist` = `*.tmk.group,*.ekb.ru,*.sinara-group.com`
